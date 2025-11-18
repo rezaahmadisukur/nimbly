@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import SheetCart from "@/components/examples/sheet/details/sheet-details-3";
 
 // Simple logo component for the navbar
 const Logo = (props: React.SVGAttributes<SVGElement>) => {
@@ -234,6 +235,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                       </NavigationMenuItem>
                     ))}
                   </NavigationMenuList>
+                  <SheetCart />
                 </NavigationMenu>
               )}
             </div>
