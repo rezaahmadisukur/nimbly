@@ -30,14 +30,14 @@ const SheetCart = () => (
       </SheetHeader>
       <div className="flex flex-col gap-4 p-4 relative overflow-y-auto mb-10">
         <Card className="flex flex-row gap-0 w-full p-2">
-          <div className="border w-1/3 rounded overflow-hidden">
+          <div className="w-1/3 rounded overflow-hidden">
             <img
               src="https://img.freepik.com/free-psd/floating-white-sneaker-minimalist-shoe-design_191095-80028.jpg?uid=R166627764&ga=GA1.1.1357571563.1761222863&semt=ais_incoming&w=740&q=80"
               alt=""
               className="w-full"
             />
           </div>
-          <div className="w-2/3 ">
+          <div className="w-2/3 flex flex-col justify-between">
             <CardHeader>
               <p className="text-xs font-semibold">T-shirt</p>
               <h3 className="font-bold line-clamp-1">T-shirt Hoodie</h3>
@@ -45,7 +45,7 @@ const SheetCart = () => (
             <CardContent className="flex items-center justify-between">
               <QunatityBtn />
               <div>
-                <Button className="bg-transparent border">
+                <Button className="bg-transparent border hover:bg-neutral-100">
                   <Trash2 className="text-red-600 size-5" />
                 </Button>
               </div>

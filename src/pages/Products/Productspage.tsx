@@ -67,7 +67,6 @@ const Productspage = () => {
           ))}
         </div>
 
-        {/* {console.log(productId)} */}
         {/* Show Detail */}
         {showDetail && (
           <div className="fixed top-0 bottom-0 right-0 left-0 bg-neutral-900/80 z-50 min-h-100 flex justify-center items-center">

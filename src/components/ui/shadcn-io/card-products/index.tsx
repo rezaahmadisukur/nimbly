@@ -36,7 +36,7 @@ export default function CardProduct(props: TypePropParams) {
             </Badge>
           </div>
           <CardTitle className="text-sm mb-1 line-clamp-1">{title}</CardTitle>
-          <CardDescription className="text-xs mb-2 line-clamp-2">
+          <CardDescription className="text-xs mb-2 line-clamp-1">
             {description}
           </CardDescription>
           <div className="flex items-center justify-end">
