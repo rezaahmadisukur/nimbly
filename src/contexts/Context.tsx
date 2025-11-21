@@ -15,17 +15,27 @@ interface TypeContextValue {
   setShowDetail: Dispatch<SetStateAction<boolean>>;
   productId: number;
   setProductId: Dispatch<SetStateAction<number>>;
+  products: [];
+  setProducts: Dispatch<SetStateAction<[]>>;
+  carts: [];
+  setCarts: Dispatch<SetStateAction<[]>>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const Context = createContext<TypeContextValue>({
-  setShowDetail: () => {},
   showDetail: false,
+  setShowDetail: () => {},
+  productId: 0,
   setProductId: () => {},
-  productId: 0
+  products: [],
+  setProducts: () => {},
+  carts: [],
+  setCarts: () => {}
 });
 
 const ContextProvider = ({ children }: TypePropsChildren) => {
+  const [products, setProducts] = useState<[]>([]);
+  const [carts, setCarts] = useState<[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [productId, setProductId] = useState<number>(0);
 
@@ -33,7 +43,11 @@ const ContextProvider = ({ children }: TypePropsChildren) => {
     showDetail,
     setShowDetail,
     productId,
-    setProductId
+    setProductId,
+    products,
+    setProducts,
+    carts,
+    setCarts
   };
 
   return <Context.Provider value={ContextValue}>{children}</Context.Provider>;

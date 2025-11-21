@@ -7,9 +7,15 @@ import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
 
 export const title = "Quantity Picker";
 
-const QunatityBtn = () => {
+interface TypeProps {
+  qty: number;
+}
+
+const QunatityBtn = (props: TypeProps) => {
+  const { qty } = props;
   const [quantity1, setQuantity1] = useState(1);
   // const [quantity2, setQuantity2] = useState(5);
+  console.log(qty);
 
   return (
     <div className="flex flex-col gap-4">

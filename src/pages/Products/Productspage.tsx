@@ -21,14 +21,13 @@ interface TypeCategory {
 }
 
 const Productspage = () => {
-  const { showDetail } = useContext(Context);
-  const [products, setProducts] = useState<[]>([]);
+  const { showDetail, products, setProducts } = useContext(Context);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
     const response = await fetchApiStore("products");
     setProducts(response);
-  }, []);
+  }, [setProducts]);
 
   useEffect(() => {
     const loadProducts = async () => {
