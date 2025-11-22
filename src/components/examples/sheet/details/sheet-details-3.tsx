@@ -10,11 +10,12 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import QunatityBtn from "../../button-group/forms/button-group-forms-4";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "../../../../redux/store.ts";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Context } from "@/contexts/Context.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
+import { deleteFromCart } from "@/redux/slices/cartSlice.ts";
 
 export const title = "Order Details Sheet";
 
@@ -32,37 +33,37 @@ interface TypeCategory {
 }
 
 const SheetCart = () => {
-  const { products, carts, setCarts } = useContext(Context);
+  const { products } = useContext(Context);
+  const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart.data);
 
-  useEffect(() => {
-    const itemInCart = cart.map((c: { id: number }) => {
-      return products.find((prod: { id: number }) => prod.id === c.id);
-    });
-    setCarts(itemInCart);
-  }, [cart, products, setCarts]);
-
   const total = useMemo(() => {
-    if (carts.length === 0) return 0;
-    const sumQty = cart.reduce(
-      (acc: number, cur: { qty: number }) => acc + cur.qty,
-      0
-    );
-    const sumPrice = carts.reduce(
-      (acc: number, cur: { price: number }) => acc + (cur?.price || 0),
-      0
-    );
-    return sumQty * sumPrice;
-  }, [cart, carts]);
+    if (products.length > 0 && cart.length > 0) {
+      const sum = cart.reduce(
+        (acc: number, cur: { id: number; qty: number }) => {
+          const prod = (products as TypeCart[]).find(
+            (p: TypeCart) => p.id === cur.id
+          );
+          return acc + (prod?.price ?? 0) * cur.qty;
+        },
+        0
+      );
+      localStorage.setItem("cart", JSON.stringify(cart));
+      return sum;
+    } else {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      return 0;
+    }
+  }, [cart, products]);
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" className="relarive">
           <ShoppingCart />
-          {carts.length > 0 && (
+          {cart.length > 0 && (
             <div className="w-4 h-4 bg-neutral-950 rounded-full absolute top-0 right-0 text-neutral-200 text-[10px] flex justify-center items-center p-1">
-              {carts.length}
+              {cart.length}
             </div>
           )}
         </Button>
@@ -73,48 +74,63 @@ const SheetCart = () => {
           <SheetDescription>Don't forget click checkout 😜</SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4 p-4 relative overflow-y-auto mb-10">
-          {carts.length > 0 &&
-            carts.map((item: TypeCart, index) => (
-              <Card className="flex flex-row gap-0 w-full p-2" key={index}>
-                <div className="w-1/3 rounded overflow-hidden">
-                  <img
-                    src={item.images[0]}
-                    alt={item.title}
-                    className="w-full"
-                  />
-                </div>
-                <div className="w-2/3 flex flex-col justify-between">
-                  <CardHeader className="flex flex-col gap-0">
-                    <Badge
-                      variant={"default"}
-                      className="text-[10px] font-semibold"
-                    >
-                      {item.category.name}
-                    </Badge>
-                    <h3 className="font-bold line-clamp-1">{item.title}</h3>
-                    <p className="text-xs">
-                      {item.price?.toLocaleString("en-EN", {
-                        style: "currency",
-                        currency: "USD",
-                        minimumFractionDigits: 2
-                      })}
-                    </p>
-                  </CardHeader>
-                  <CardContent className="flex items-center justify-between">
-                    <QunatityBtn qty={0} />
-                    <div>
-                      <Button className="bg-transparent border hover:bg-neutral-100">
-                        <Trash2 className="text-red-600 size-5" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </div>
-              </Card>
-            ))}
+          {cart.length > 0 &&
+            cart.map((item: { id: number; qty: number }, index: number) => {
+              const product = products.find(
+                (prod: TypeCart) => prod.id === item.id
+              ) as TypeCart | undefined;
+              return (
+                <Card className="flex flex-row gap-0 w-full p-2" key={index}>
+                  <div className="w-1/3 rounded overflow-hidden">
+                    <img
+                      src={product?.images[0]}
+                      alt={"..."}
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="w-2/3 flex flex-col justify-between">
+                    <CardHeader className="flex flex-col gap-0">
+                      <Badge
+                        variant={"secondary"}
+                        className="text-[10px] font-semibold"
+                      >
+                        {product?.category.name}
+                      </Badge>
+                      <h3 className="font-medium line-clamp-1">
+                        {product?.title}
+                      </h3>
+                      <p className="text-xs font-bold">
+                        {(item.qty * (product?.price ?? 0)).toLocaleString(
+                          "en-EN",
+                          {
+                            style: "currency",
+                            currency: "USD",
+                            minimumFractionDigits: 2
+                          }
+                        )}
+                      </p>
+                    </CardHeader>
+                    <CardContent className="flex items-center justify-between">
+                      <QunatityBtn qty={item.qty} id={item.id} />
+                      <div>
+                        <Button
+                          className="bg-transparent border hover:bg-neutral-100"
+                          onClick={() =>
+                            dispatch(deleteFromCart({ id: item.id }))
+                          }
+                        >
+                          <Trash2 className="text-red-600 size-5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </div>
+                </Card>
+              );
+            })}
         </div>
         <div className="absolute bottom-0 border-2 w-full ">
           <Button className="w-full" variant="outline">
-            Track Shipment{" "}
+            Checout{" "}
             <span className="font-bold">
               {total !== 0
                 ? total.toLocaleString("en-EN", {

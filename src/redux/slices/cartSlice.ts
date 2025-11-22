@@ -22,9 +22,25 @@ const cartSlice = createSlice({
       } else {
         state.data.push(action.payload);
       }
+    },
+    decrementInCart: (state, action) => {
+      const itemInCart = state.data.find(
+        (item: { id: number }) => item.id === action.payload.id
+      );
+      if (itemInCart) {
+        itemInCart.qty--;
+      } else {
+        return;
+      }
+    },
+    deleteFromCart: (state, action) => {
+      const deleteItem = state.data.filter(
+        (item: { id: number }) => item.id !== action.payload.id
+      );
+      state.data = deleteItem;
     }
   }
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, decrementInCart, deleteFromCart } = cartSlice.actions;
 export default cartSlice.reducer;

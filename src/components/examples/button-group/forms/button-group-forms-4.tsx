@@ -1,38 +1,38 @@
-"use client";
-
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
+import { useDispatch } from "react-redux";
+import { addToCart, decrementInCart } from "@/redux/slices/cartSlice";
 
 export const title = "Quantity Picker";
 
 interface TypeProps {
   qty: number;
+  id: number;
 }
 
 const QunatityBtn = (props: TypeProps) => {
-  const { qty } = props;
-  const [quantity1, setQuantity1] = useState(1);
+  const { qty, id } = props;
+  const dispatch = useDispatch();
   // const [quantity2, setQuantity2] = useState(5);
-  console.log(qty);
+  // console.log(qty);
 
   return (
     <div className="flex flex-col gap-4">
       <ButtonGroup>
         <Button
-          disabled={quantity1 === 0}
-          onClick={() => setQuantity1(Math.max(0, quantity1 - 1))}
+          disabled={qty === 1}
+          onClick={() => dispatch(decrementInCart({ id: id, qty: 1 }))}
           size="sm"
           variant="outline"
         >
           <MinusIcon />
         </Button>
         <ButtonGroupText className="min-w-12 justify-center">
-          {quantity1}
+          {qty}
         </ButtonGroupText>
         <Button
-          onClick={() => setQuantity1(quantity1 + 1)}
+          onClick={() => dispatch(addToCart({ id: id, qty: 1 }))}
           size="sm"
           variant="outline"
         >
