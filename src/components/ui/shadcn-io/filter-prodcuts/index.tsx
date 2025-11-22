@@ -18,7 +18,7 @@ import { Context } from "@/contexts/Context";
 import { useContext } from "react";
 
 export default function FilterProduct() {
-  const { search, setSearch } = useContext(Context);
+  const { search, setSearch, selectOpt, setSelectOpt } = useContext(Context);
 
   return (
     <div className="w-full flex justify-center">
@@ -42,8 +42,8 @@ export default function FilterProduct() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="framework">Sort By</Label>
-                <Select>
-                  <SelectTrigger id="framework" className="w-full">
+                <Select onValueChange={setSelectOpt} value={selectOpt}>
+                  <SelectTrigger id="opt" className="w-full">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">

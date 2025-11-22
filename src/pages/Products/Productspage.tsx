@@ -20,8 +20,15 @@ interface TypeCategory {
   name: string;
 }
 
+interface TypeSelectOpt {
+  id: number;
+  title: string;
+  price: number;
+}
+
 const Productspage = () => {
-  const { showDetail, products, setProducts, search } = useContext(Context);
+  const { showDetail, products, setProducts, search, selectOpt } =
+    useContext(Context);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
@@ -39,10 +46,43 @@ const Productspage = () => {
   }, [fetchData]);
 
   const filterData = products.filter((item: { title: string }) => {
-    return item.title.toLowerCase().includes(search.toLowerCase());
+    const data = item.title.toLowerCase().includes(search.toLowerCase());
+    switch (selectOpt) {
+      case "low":
+        return (
+          data &&
+          products.sort(
+            (a: TypeSelectOpt, b: TypeSelectOpt) => a.price - b.price
+          )
+        );
+      case "high":
+        return (
+          data &&
+          products.sort(
+            (a: TypeSelectOpt, b: TypeSelectOpt) => b.price - a.price
+          )
+        );
+      case "asc":
+        return (
+          data &&
+          products.sort((a: TypeSelectOpt, b: TypeSelectOpt) =>
+            a.title.localeCompare(b.title)
+          )
+        );
+      case "desc":
+        return (
+          data &&
+          products.sort((a: TypeSelectOpt, b: TypeSelectOpt) =>
+            b.title.localeCompare(a.title)
+          )
+        );
+      default:
+        return (
+          data &&
+          products.sort((a: TypeSelectOpt, b: TypeSelectOpt) => a.id - b.id)
+        );
+    }
   });
-
-  console.log(filterData);
 
   return (
     <App>
