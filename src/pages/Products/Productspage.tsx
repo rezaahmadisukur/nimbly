@@ -21,7 +21,7 @@ interface TypeCategory {
 }
 
 const Productspage = () => {
-  const { showDetail, products, setProducts } = useContext(Context);
+  const { showDetail, products, setProducts, search } = useContext(Context);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
@@ -38,6 +38,12 @@ const Productspage = () => {
     loadProducts();
   }, [fetchData]);
 
+  const filterData = products.filter((item: { title: string }) => {
+    return item.title.toLowerCase().includes(search.toLowerCase());
+  });
+
+  console.log(filterData);
+
   return (
     <App>
       <section className="flex w-full items-start gap-3">
@@ -48,7 +54,7 @@ const Productspage = () => {
 
         {/* Products */}
         <div className="grid grid-cols-4 w-3/4 gap-3">
-          {products.map((product: TypeProducts) => (
+          {filterData.map((product: TypeProducts) => (
             <div key={product.id}>
               {isLoading ? (
                 <SkeletonCard />
