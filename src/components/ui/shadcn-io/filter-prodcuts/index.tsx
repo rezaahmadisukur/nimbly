@@ -15,10 +15,28 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Context } from "@/contexts/Context";
-import { useContext } from "react";
+import { useContext, useState, type FormEvent } from "react";
+import { Checkbox } from "../../checkbox";
 
 export default function FilterProduct() {
-  const { search, setSearch, selectOpt, setSelectOpt } = useContext(Context);
+  const { search, setSearch, selectOpt, setSelectOpt, products } =
+    useContext(Context);
+  const [checkbox, setCheckbox] = useState<[]>([]);
+
+  const categories = Array.from(
+    new Set(
+      products
+        .map((p: { category: { name: string } }) => p.category.name)
+        .sort((a, b) => a.localeCompare(b))
+    )
+  );
+
+  const handleChecked = (e: FormEvent, test: string) => {
+    // e.preventDefault();
+    const { value, checked } = e.target as HTMLInputElement;
+    console.log(test);
+    console.log(checked);
+  };
 
   return (
     <div className="w-full flex justify-center">
@@ -29,7 +47,7 @@ export default function FilterProduct() {
         </CardHeader>
         <CardContent>
           <div>
-            <div className="grid w-full items-center gap-4">
+            <div className="grid w-full items-center gap-6">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="Search">Search</Label>
                 <Input
@@ -39,6 +57,20 @@ export default function FilterProduct() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
+              </div>
+              <div className="flex flex-col gap-6">
+                <Label>By Category</Label>
+                {categories.map((category, index) => (
+                  <div key={index} className="flex items-center gap-1">
+                    <Checkbox
+                      id={`check-${index}`}
+                      value={category}
+                      onChange={(e) => handleChecked(e, category)}
+                      name="check"
+                    />
+                    <Label htmlFor={`check-${index}`}>{category}</Label>
+                  </div>
+                ))}
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="framework">Sort By</Label>
