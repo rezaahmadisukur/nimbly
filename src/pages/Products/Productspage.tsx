@@ -27,7 +27,7 @@ interface TypeSelectOpt {
 }
 
 const Productspage = () => {
-  const { showDetail, products, setProducts, search, selectOpt } =
+  const { showDetail, products, setProducts, search, selectOpt, checkbox } =
     useContext(Context);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,7 +46,9 @@ const Productspage = () => {
   }, [fetchData]);
 
   const filterData = products.filter((item: { title: string }) => {
-    const data = item.title.toLowerCase().includes(search.toLowerCase());
+    const data =
+      item.title.toLowerCase().includes(search.toLowerCase()) &&
+      (checkbox.length === 0 || checkbox.includes(item.category.name));
     switch (selectOpt) {
       case "low":
         return (

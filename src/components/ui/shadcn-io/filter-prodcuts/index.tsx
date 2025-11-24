@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -15,13 +16,18 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Context } from "@/contexts/Context";
-import { useContext, useState, type FormEvent } from "react";
-import { Checkbox } from "../../checkbox";
+import { useContext } from "react";
 
 export default function FilterProduct() {
-  const { search, setSearch, selectOpt, setSelectOpt, products } =
-    useContext(Context);
-  const [checkbox, setCheckbox] = useState<[]>([]);
+  const {
+    search,
+    setSearch,
+    selectOpt,
+    setSelectOpt,
+    products,
+    checkbox,
+    setCheckbox
+  } = useContext(Context);
 
   const categories = Array.from(
     new Set(
@@ -31,11 +37,12 @@ export default function FilterProduct() {
     )
   );
 
-  const handleChecked = (e: FormEvent, test: string) => {
-    // e.preventDefault();
-    const { value, checked } = e.target as HTMLInputElement;
-    console.log(test);
-    console.log(checked);
+  const handleChecked = (value: string, checked: boolean) => {
+    if (checked) {
+      setCheckbox((prev) => [...prev, value]);
+    } else {
+      setCheckbox(checkbox.filter((c) => c !== value));
+    }
   };
 
   return (
@@ -65,7 +72,9 @@ export default function FilterProduct() {
                     <Checkbox
                       id={`check-${index}`}
                       value={category}
-                      onChange={(e) => handleChecked(e, category)}
+                      onCheckedChange={(checked) =>
+                        handleChecked(category, checked as boolean)
+                      }
                       name="check"
                     />
                     <Label htmlFor={`check-${index}`}>{category}</Label>
