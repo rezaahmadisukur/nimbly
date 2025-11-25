@@ -45,46 +45,48 @@ const Productspage = () => {
     loadProducts();
   }, [fetchData]);
 
-  const filterData = products.filter((item: { title: string }) => {
-    const data =
-      item.title.toLowerCase().includes(search.toLowerCase()) &&
-      (checkbox.length === 0 || checkbox.includes(item.category.name));
-    switch (selectOpt) {
-      case "low":
-        return (
-          data &&
-          products.sort(
-            (a: TypeSelectOpt, b: TypeSelectOpt) => a.price - b.price
-          )
-        );
-      case "high":
-        return (
-          data &&
-          products.sort(
-            (a: TypeSelectOpt, b: TypeSelectOpt) => b.price - a.price
-          )
-        );
-      case "asc":
-        return (
-          data &&
-          products.sort((a: TypeSelectOpt, b: TypeSelectOpt) =>
-            a.title.localeCompare(b.title)
-          )
-        );
-      case "desc":
-        return (
-          data &&
-          products.sort((a: TypeSelectOpt, b: TypeSelectOpt) =>
-            b.title.localeCompare(a.title)
-          )
-        );
-      default:
-        return (
-          data &&
-          products.sort((a: TypeSelectOpt, b: TypeSelectOpt) => a.id - b.id)
-        );
+  const filterData = products.filter(
+    (item: { title: string; category: { name: string } }) => {
+      const data =
+        item.title.toLowerCase().includes(search.toLowerCase()) &&
+        (checkbox.length === 0 || checkbox.includes(item.category.name));
+      switch (selectOpt) {
+        case "low":
+          return (
+            data &&
+            products.sort(
+              (a: TypeSelectOpt, b: TypeSelectOpt) => a.price - b.price
+            )
+          );
+        case "high":
+          return (
+            data &&
+            products.sort(
+              (a: TypeSelectOpt, b: TypeSelectOpt) => b.price - a.price
+            )
+          );
+        case "asc":
+          return (
+            data &&
+            products.sort((a: TypeSelectOpt, b: TypeSelectOpt) =>
+              a.title.localeCompare(b.title)
+            )
+          );
+        case "desc":
+          return (
+            data &&
+            products.sort((a: TypeSelectOpt, b: TypeSelectOpt) =>
+              b.title.localeCompare(a.title)
+            )
+          );
+        default:
+          return (
+            data &&
+            products.sort((a: TypeSelectOpt, b: TypeSelectOpt) => a.id - b.id)
+          );
+      }
     }
-  });
+  );
 
   return (
     <App>

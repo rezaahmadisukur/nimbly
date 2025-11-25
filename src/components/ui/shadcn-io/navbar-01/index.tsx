@@ -13,7 +13,7 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SheetCart from "@/components/examples/sheet/details/sheet-details-3";
 
 // Simple logo component for the navbar
@@ -104,9 +104,9 @@ export interface Navbar01Props extends React.HTMLAttributes<HTMLElement> {
 // Default navigation links
 const defaultNavigationLinks: Navbar01NavLink[] = [
   { href: "/", label: "Home", active: true },
-  { href: "/products", label: "Products" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" }
+  { href: "/products", label: "Products", active: true },
+  { href: "/about", label: "About", active: true },
+  { href: "/contact", label: "Contact", active: true }
 ];
 
 export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
@@ -155,6 +155,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
       },
       [ref]
     );
+    const location = useLocation();
 
     return (
       <header
@@ -225,7 +226,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                           to={link.href}
                           className={cn(
                             "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline",
-                            link.active
+                            location.pathname === link.href && link.active
                               ? "bg-accent text-accent-foreground"
                               : "text-foreground/80 hover:text-foreground"
                           )}
@@ -235,7 +236,9 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                       </NavigationMenuItem>
                     ))}
                   </NavigationMenuList>
-                  <SheetCart />
+                  <div className="mx-5">
+                    <SheetCart />
+                  </div>
                 </NavigationMenu>
               )}
             </div>

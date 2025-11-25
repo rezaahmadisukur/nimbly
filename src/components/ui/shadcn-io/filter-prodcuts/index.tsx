@@ -71,6 +71,7 @@ export default function FilterProduct() {
                   <div key={index} className="flex items-center gap-1">
                     <Checkbox
                       id={`check-${index}`}
+                      checked={checkbox.includes(category)}
                       value={category}
                       onCheckedChange={(checked) =>
                         handleChecked(category, checked as boolean)

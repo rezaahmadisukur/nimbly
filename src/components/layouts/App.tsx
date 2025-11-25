@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Navbar from "./Navbar";
 
 interface TypeProps {
@@ -10,6 +11,8 @@ const App = ({ children }: TypeProps) => {
       <Navbar />
 
       <main className="w-11/12 mt-10 min-h-screen mx-auto">{children}</main>
+
+      <Footer />
     </div>
   );
 };

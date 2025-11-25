@@ -21,8 +21,8 @@ interface TypeContextValue {
   setSearch: Dispatch<SetStateAction<string>>;
   selectOpt: string;
   setSelectOpt: Dispatch<SetStateAction<string>>;
-  checkbox: [];
-  setCheckbox: Dispatch<SetStateAction<[]>>;
+  checkbox: string[];
+  setCheckbox: Dispatch<SetStateAction<string[]>>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -47,7 +47,7 @@ const ContextProvider = ({ children }: TypePropsChildren) => {
   const [productId, setProductId] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [selectOpt, setSelectOpt] = useState<string>("");
-  const [checkbox, setCheckbox] = useState<[]>([]);
+  const [checkbox, setCheckbox] = useState<string[]>([]);
 
   const ContextValue: TypeContextValue = {
     showDetail,
