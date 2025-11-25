@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { Context } from "@/contexts/Context";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
+import { toast } from "sonner";
 
 interface TypePropParams {
   id: number;
@@ -20,11 +21,6 @@ interface TypePropParams {
   price?: number;
   category: string;
 }
-
-// interface TypeDispatch {
-//   id: number;
-//   qty: number;
-// }
 
 export default function CardProduct(props: TypePropParams) {
   const { id, title, image, description, price, category } = props;
@@ -70,9 +66,19 @@ export default function CardProduct(props: TypePropParams) {
             </Button>
             <Button
               size="sm"
-              className="text-xs px-2 py-1 h-7 w-full"
               type="button"
-              onClick={() => dispatch(addToCart({ id: id, qty: 1 }))}
+              onClick={() => {
+                dispatch(addToCart({ id: id, qty: 1 }));
+                toast.success("Successfully add to cart", {
+                  position: "bottom-right",
+                  duration: 3000,
+                  richColors: true,
+                  action: {
+                    label: "Close",
+                    onClick: () => {}
+                  }
+                });
+              }}
             >
               <ShoppingBasket />
               Add to Cart

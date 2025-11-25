@@ -16,6 +16,7 @@ import { useContext, useMemo } from "react";
 import { Context } from "@/contexts/Context.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { deleteFromCart } from "@/redux/slices/cartSlice.ts";
+import { toast } from "sonner";
 
 export const title = "Order Details Sheet";
 
@@ -59,7 +60,7 @@ const SheetCart = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" className="relarive">
+        <Button variant="outline" className="relative">
           <ShoppingCart />
           {cart.length > 0 && (
             <div className="w-4 h-4 bg-neutral-950 rounded-full absolute top-0 right-0 text-neutral-200 text-[10px] flex justify-center items-center p-1">
@@ -115,9 +116,18 @@ const SheetCart = () => {
                       <div>
                         <Button
                           className="bg-transparent border hover:bg-neutral-100"
-                          onClick={() =>
-                            dispatch(deleteFromCart({ id: item.id }))
-                          }
+                          onClick={() => {
+                            dispatch(deleteFromCart({ id: item.id }));
+                            toast.success("Delete from cart Successfully", {
+                              position: "bottom-right",
+                              duration: 3000,
+                              richColors: true,
+                              action: {
+                                label: "Close",
+                                onClick: () => {}
+                              }
+                            });
+                          }}
                         >
                           <Trash2 className="text-red-600 size-5" />
                         </Button>
@@ -130,7 +140,7 @@ const SheetCart = () => {
         </div>
         <div className="absolute bottom-0 border-2 w-full ">
           <Button className="w-full" variant="outline">
-            Checout{" "}
+            CheckOut{" "}
             <span className="font-bold">
               {total !== 0
                 ? total.toLocaleString("en-EN", {

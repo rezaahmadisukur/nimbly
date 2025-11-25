@@ -11,6 +11,7 @@ import {
 import ContextProvider from "./contexts/Context.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
+import { Toaster } from "./components/ui/sonner.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <ContextProvider>
         <RouterProvider router={router} />
+        <Toaster />
       </ContextProvider>
     </Provider>
   </StrictMode>
