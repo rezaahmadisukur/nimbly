@@ -52,6 +52,8 @@
 ## 📸 Screenshot Aplikasi
 
 ![App Screenshot](/public/img/ss.png)
+![App Screenshot](/public/img/ss-tab.png)
+![App Screenshot](/public/img/ss-mb.png)
 
 ## 🧐 Tentang Project
 
